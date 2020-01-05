@@ -1,9 +1,12 @@
-extern crate sdl2;
+//extern crate sdl2;
+mod circle;
 
 use sdl2::pixels::Color;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
+
+use crate::circle::Circle;
 
 pub fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -16,6 +19,8 @@ pub fn main() {
         .build()
         .unwrap();
     let mut canvas = window.into_canvas().build().unwrap();
+
+    let circle = Circle::new(10, xm, ym);
 
     canvas.set_draw_color(white);
     canvas.clear();
@@ -37,6 +42,7 @@ pub fn main() {
             }
         }
 
+        circle.display(&mut canvas);
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
