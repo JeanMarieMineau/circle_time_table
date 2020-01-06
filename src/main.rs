@@ -20,7 +20,7 @@ pub fn main() {
         .unwrap();
     let mut canvas = window.into_canvas().build().unwrap();
 
-    let circle = Circle::new(10, xm, ym);
+    let circle = Circle::new(100, xm, ym);
 
     canvas.set_draw_color(white);
     canvas.clear();
@@ -42,7 +42,7 @@ pub fn main() {
             }
         }
 
-        circle.display(&mut canvas);
+        circle.draw_table(&mut canvas, 3);
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
