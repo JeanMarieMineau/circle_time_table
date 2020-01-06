@@ -20,7 +20,11 @@ pub fn main() {
         .unwrap();
     let mut canvas = window.into_canvas().build().unwrap();
 
-    let circle = Circle::new(100, xm, ym);
+    let mut n = 10;
+    let n_max = 500;
+    let n_min = 10;
+    let mut grow = true;
+    let mut circle = Circle::new(n, xm, ym);
 
     canvas.set_draw_color(white);
     canvas.clear();
@@ -42,8 +46,19 @@ pub fn main() {
             }
         }
 
-        circle.draw_table(&mut canvas, 3);
+        circle.draw_table(&mut canvas, 60);
+        if grow{
+            n += 1;
+        }else{
+            n -= 1;
+        }
+        circle.set_n(n);
+        if n == n_max {
+            grow = false;
+        }else if n == n_min {
+            grow = true;
+        }
         canvas.present();
-        ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
+        ::std::thread::sleep(Duration::from_millis(500));
     }
 }

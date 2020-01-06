@@ -10,25 +10,39 @@ use sdl2::render::Canvas;
 pub struct Circle{
     points: Vec<Point>,
     n: usize,
+    xm: u32,
+    ym: u32,
 }
 
 impl Circle{
     pub fn new(n: usize, xm: u32, ym: u32)->Circle{
-        let r = (min(xm, ym)/2 -50) as f64;
-        let pi = std::f64::consts::PI;
-        let center = Complex::new((xm/2) as f64, (ym/2) as f64);
+        let mut circle = Circle{
+            points: Vec::new(),
+            n:0,
+            xm: xm,
+            ym: ym
+        };
+        circle.set_n(n);
+        circle
+    }
 
-        let mut points = Vec::new();
+    pub fn set_n(&mut self, n: usize){
+        let r = (min(self.xm, self.ym)/2 -50) as f64;
+        let pi = std::f64::consts::PI;
+        let center = Complex::new((self.xm/2) as f64, (self.ym/2) as f64);
+
+        self.points.clear();
+        let quarter = (2 as f64)*pi / (n as f64);
         for i in 0..n{
-            let theta = ((2*i) as f64)*pi / (n as f64);
+            let theta = (i as f64) * quarter;
             let c = Complex::from_polar(&r, &theta) + center;
             let point = Point::new(
                 c.re.round() as i32,
                 c.im.round() as i32
             );
-            points.push(point);
+            self.points.push(point);
         }
-        Circle{points: points, n:n}
+        self.n = n;
     }
 
     fn draw_line<T>(&self, canvas: &mut Canvas<T>, i: usize, j: usize)
